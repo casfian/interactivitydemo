@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:interactivitydemo/screen2.dart';
+import 'package:interactivitydemo/student.dart';
 
 class Screen1 extends StatefulWidget {
   const Screen1({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class _Screen1State extends State<Screen1> {
 
   final myController = TextEditingController();
   final my2Controller = TextEditingController();
+  final my3Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,8 @@ class _Screen1State extends State<Screen1> {
                 myText,
                 style: TextStyle(fontSize: 40),
               ),
-              TextField(
+              TextFormField(
+                
                 controller: myController, //2. letak sini
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person),
@@ -52,8 +55,20 @@ class _Screen1State extends State<Screen1> {
                   border: OutlineInputBorder(),
                 ),
               ),
+              TextFormField(
+                controller: my3Controller, //2. letak sini
+                decoration: InputDecoration(
+                  prefixText: 'email: ',
+                  border: OutlineInputBorder(),
+                ),
+              ),
               ElevatedButton(
                   onPressed: () {
+                    //1. validate guna sendiri punya code
+                    if (myController.text.isEmpty) {
+                      print('Text is empty');
+                    }
+
                     //code saya
                     myText = myController.text +
                         ' ' +
@@ -63,15 +78,25 @@ class _Screen1State extends State<Screen1> {
                     });
                   },
                   child: Text('Change Text')),
-                  
               ElevatedButton(
                   onPressed: () {
                     //code
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Screen2()  )  );
+                    //1. tambah pass sebagai parameter yg
+                    //nak diguna dlm Screen2
+                    Student objStudent = Student(myController.text,
+                        int.parse(my2Controller.text), my3Controller.text);
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Screen2(pass: objStudent)));
                   },
                   child: Text('goto Screen2')),
-
-
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'screen3');
+                  },
+                  child: Text('goto Screen3')),
             ],
           ),
         ),
